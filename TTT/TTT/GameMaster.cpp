@@ -1,23 +1,28 @@
 #include "GameMaster.h"
-#include <SFML/Graphics.hpp>
+
+GameMaster::GameMaster(std::shared_ptr<sf::RenderWindow> iWindow) :
+	_window(std::move(iWindow))
+{
+}
 
 void GameMaster::Run()
 {
-    sf::RenderWindow window(sf::VideoMode(200, 200), "SFML works!");
+    _window->setFramerateLimit(60);
+
     sf::CircleShape shape(100.f);
     shape.setFillColor(sf::Color::Green);
 
-    while (window.isOpen())
+    while (_window->isOpen())
     {
         sf::Event event;
-        while (window.pollEvent(event))
+        while (_window->pollEvent(event))
         {
             if (event.type == sf::Event::Closed)
-                window.close();
+                _window->close();
         }
 
-        window.clear();
-        window.draw(shape);
-        window.display();
+        _window->clear();
+        _window->draw(shape);
+        _window->display();
     }
 }
