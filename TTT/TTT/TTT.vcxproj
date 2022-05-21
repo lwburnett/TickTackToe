@@ -87,6 +87,9 @@
     <PostBuildEvent>
       <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>del $(OutDir)*.dll</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
@@ -109,6 +112,9 @@
     <PostBuildEvent>
       <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>del $(OutDir)*.dll</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -127,6 +133,9 @@
     <PostBuildEvent>
       <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>del $(OutDir)*.dll</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -149,6 +158,9 @@
     <PostBuildEvent>
       <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)</Command>
     </PostBuildEvent>
+    <PreBuildEvent>
+      <Command>del $(OutDir)*.dll</Command>
+    </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameMaster.cpp" />
