@@ -164,10 +164,15 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="GameMaster.cpp" />
+    <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MainMenuScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="GameMaster.h" />
+    <ClInclude Include="GameTime.h" />
+    <ClInclude Include="IScreen.h" />
+    <ClInclude Include="MainMenuScreen.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
