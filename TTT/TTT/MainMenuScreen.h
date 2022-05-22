@@ -14,8 +14,12 @@ namespace sf
 class MainMenuScreen : public IScreen
 {
 public:
-	MainMenuScreen(const std::function<void(const GameTime&)>& iOnPlay);
+	MainMenuScreen(
+		const std::function<void(const GameTime&)>& iOnPlay, 
+		const std::function<void(const GameTime&)>& iOnInstructions, 
+		const std::function<void(const GameTime&)>& iOnQuit);
 	~MainMenuScreen() override = default;
+
 	void Update(const GameTime& iGameTime) override;
 
 protected:
@@ -25,4 +29,5 @@ private:
 	std::shared_ptr<sf::Text> _titleText;
 	std::shared_ptr<Button> _playButton;
 	std::shared_ptr<Button> _instructionsButton;
+	std::shared_ptr<Button> _quitButton;
 };

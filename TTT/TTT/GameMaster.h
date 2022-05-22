@@ -1,5 +1,6 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include "GameTime.h"
 
 class IScreen;
 
@@ -18,6 +19,13 @@ private:
 	sf::Time _lastIterationTime;
 
 	std::shared_ptr<IScreen> _currentScreen;
+	std::shared_ptr<IScreen> _previousScreen;
+
+	bool _isQuitPressed;
 
 	void Init();
+	void OnMainMenu(const GameTime& iGameTime);
+	void OnPlayGame(const GameTime& iGameTime);
+	void OnInstructions(const GameTime& iGameTime);
+	void OnQuit(const GameTime& iGameTime);
 };
