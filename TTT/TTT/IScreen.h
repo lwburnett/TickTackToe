@@ -1,9 +1,9 @@
 #pragma once
 #include <SFML/Graphics/Drawable.hpp>
-#include "GameTime.h"
+#include "IUpdateable.h"
 
-class IScreen : public sf::Drawable
+class IScreen : public sf::Drawable, public IUpdateable
 {
 public:
-	virtual void Update(const GameTime& iGameTime) = 0;
+	~IScreen() override = default;
 };

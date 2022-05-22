@@ -13,7 +13,7 @@ MainMenuScreen::MainMenuScreen()
     _titleText->setPosition(23.5, 100);
 }
 
-void MainMenuScreen::Update(const GameTime& iGameTime)
+void MainMenuScreen::Update(const GameTime& iGameTime, const sf::Event& iEvent)
 {
 }
 

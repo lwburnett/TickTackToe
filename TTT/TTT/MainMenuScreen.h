@@ -1,6 +1,7 @@
 #pragma once
 #include <memory>
 #include <SFML/Graphics/Drawable.hpp>
+#include <SFML/Window/Event.hpp>
 #include "IScreen.h"
 
 namespace sf
@@ -12,7 +13,8 @@ class MainMenuScreen : public IScreen
 {
 public:
 	MainMenuScreen();
-	void Update(const GameTime& iGameTime) override;
+	~MainMenuScreen() override = default;
+	void Update(const GameTime& iGameTime, const sf::Event& iEvent) override;
 
 protected:
 	void draw(sf::RenderTarget& iTarget, sf::RenderStates iStates) const override;

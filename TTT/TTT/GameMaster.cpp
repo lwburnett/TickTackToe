@@ -28,7 +28,7 @@ void GameMaster::Run()
 
         _lastIterationTime = totalTime;
 
-        _currentScreen->Update(thisIterationGameTime);
+        _currentScreen->Update(thisIterationGameTime, event);
 
         _window->clear();
         _window->draw(*_currentScreen);
