@@ -1,5 +1,7 @@
 #include "GameMaster.h"
 #include "IScreen.h"
+#include "LevelManager.h"
+#include "LevelScreen.h"
 #include "LevelSelectScreen.h"
 #include "MainMenuScreen.h"
 #include "WindowManager.h"
@@ -67,7 +69,7 @@ void GameMaster::OnPlayGame(const GameTime& iGameTime)
 {
     _previousScreen = _currentScreen;
     _currentScreen = std::make_shared<LevelSelectScreen>(
-        [this](const GameTime& iGameTime) {},
+        [this](const GameTime& iGameTime) { OnLevelScreen(iGameTime, LevelManager::Level1); },
         [this](const GameTime& iGameTime) {},
         [this](const GameTime& iGameTime) {},
         [this](const GameTime& iGameTime) {},
@@ -82,6 +84,12 @@ void GameMaster::OnPlayGame(const GameTime& iGameTime)
 void GameMaster::OnInstructions(const GameTime& iGameTime)
 {
     //_currentScreen = std::make_shared<InstructionsScreen>();
+}
+
+void GameMaster::OnLevelScreen(const GameTime& iGameTime, const LevelInfo& iLevelInfo)
+{
+    _previousScreen = _currentScreen;
+    _currentScreen = std::make_shared<LevelScreen>(iLevelInfo);
 }
 
 void GameMaster::OnQuit(const GameTime& iGameTime)

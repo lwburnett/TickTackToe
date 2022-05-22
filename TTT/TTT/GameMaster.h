@@ -1,6 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
 #include "GameTime.h"
+#include "LevelManager.h"
 
 class IScreen;
 
@@ -27,5 +28,6 @@ private:
 	void OnMainMenu(const GameTime& iGameTime);
 	void OnPlayGame(const GameTime& iGameTime);
 	void OnInstructions(const GameTime& iGameTime);
+	void OnLevelScreen(const GameTime& iGameTime, const LevelInfo& iLevelInfo);
 	void OnQuit(const GameTime& iGameTime);
 };
