@@ -58,7 +58,7 @@ void Button::Update(const GameTime& iGameTime)
 	{
 		const auto contentBounds = _content->getLocalBounds();
 		const auto posX = getPosition().x + (getScale().x - contentBounds.width) / 2;
-		const auto posY = getPosition().y + (getScale().y - contentBounds.height) / 2;
+		const auto posY = (getPosition().y + (getScale().y - contentBounds.height) / 2) - 10;
 
 		_content->setPosition(posX, posY);
 	}

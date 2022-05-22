@@ -24,4 +24,5 @@ protected:
 private:
 	std::shared_ptr<sf::Text> _titleText;
 	std::shared_ptr<Button> _playButton;
+	std::shared_ptr<Button> _instructionsButton;
 };
