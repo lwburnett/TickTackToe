@@ -1,8 +1,8 @@
 #include "GameMaster.h"
-
 #include "GameTime.h"
 #include "IScreen.h"
 #include "MainMenuScreen.h"
+#include "WindowManager.h"
 
 GameMaster::GameMaster(std::shared_ptr<sf::RenderWindow> iWindow) :
 	_window(std::move(iWindow))
@@ -15,12 +15,10 @@ void GameMaster::Run()
 
     while (_window->isOpen())
     {
-        sf::Event event{};
-        while (_window->pollEvent(event))
-        {
-            if (event.type == sf::Event::Closed)
-                _window->close();
-        }
+        WindowManager::Update(_window);
+
+        if (WindowManager::GetIsWindowClosed())
+            break;
 
         auto totalTime = _clock.getElapsedTime();
         auto dTime = totalTime - _lastIterationTime;
@@ -28,7 +26,7 @@ void GameMaster::Run()
 
         _lastIterationTime = totalTime;
 
-        _currentScreen->Update(thisIterationGameTime, event);
+        _currentScreen->Update(thisIterationGameTime);
 
         _window->clear();
         _window->draw(*_currentScreen);
@@ -43,5 +41,5 @@ void GameMaster::Init()
     _clock = sf::Clock();
     _lastIterationTime = sf::Time();
 
-    _currentScreen = std::make_shared<MainMenuScreen>();
+    _currentScreen = std::make_shared<MainMenuScreen>([](const GameTime& iGameTime){});
 }
