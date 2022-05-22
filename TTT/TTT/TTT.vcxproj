@@ -85,10 +85,12 @@
       <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)</Command>
+      <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)
+xcopy $(SolutionDir)..\Assets $(OutDir)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>del $(OutDir)*.dll</Command>
+      <Command>del $(OutDir)*.dll
+del $(OutDir)*.ttf</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -110,10 +112,12 @@
       <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)</Command>
+      <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)
+xcopy $(SolutionDir)..\Assets $(OutDir)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>del $(OutDir)*.dll</Command>
+      <Command>del $(OutDir)*.dll
+del $(OutDir)*.ttf</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -131,10 +135,12 @@
       <AdditionalDependencies>sfml-audio-d.lib;sfml-graphics-d.lib;sfml-main-d.lib;sfml-window-d.lib;sfml-system-d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)</Command>
+      <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)
+xcopy $(SolutionDir)..\Assets $(OutDir)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>del $(OutDir)*.dll</Command>
+      <Command>del $(OutDir)*.dll
+del $(OutDir)*.ttf</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -156,19 +162,23 @@
       <AdditionalDependencies>sfml-audio.lib;sfml-graphics.lib;sfml-main.lib;sfml-window.lib;sfml-system.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
-      <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)</Command>
+      <Command>xcopy $(SolutionDir)..\SFML-2.5.1\bin $(OutDir)
+xcopy $(SolutionDir)..\Assets $(OutDir)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
-      <Command>del $(OutDir)*.dll</Command>
+      <Command>del $(OutDir)*.dll
+del $(OutDir)*.ttf</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="GameMaster.cpp" />
     <ClCompile Include="GameTime.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MainMenuScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AssetManager.h" />
     <ClInclude Include="GameMaster.h" />
     <ClInclude Include="GameTime.h" />
     <ClInclude Include="IScreen.h" />

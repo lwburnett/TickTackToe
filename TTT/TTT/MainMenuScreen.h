@@ -1,7 +1,12 @@
 #pragma once
-#include <SFML/Graphics/CircleShape.hpp>
-
+#include <memory>
+#include <SFML/Graphics/Drawable.hpp>
 #include "IScreen.h"
+
+namespace sf
+{
+	class Text;
+}
 
 class MainMenuScreen : public IScreen
 {
@@ -13,5 +18,5 @@ protected:
 	void draw(sf::RenderTarget& iTarget, sf::RenderStates iStates) const override;
 
 private:
-	sf::CircleShape _circle;
+	std::shared_ptr<sf::Text> _titleText;
 };
