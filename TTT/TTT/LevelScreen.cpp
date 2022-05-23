@@ -1,4 +1,4 @@
-#include "LevelScreen.h"
+﻿#include "LevelScreen.h"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "AssetManager.h"
@@ -37,15 +37,14 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	_wall4 = std::make_shared<sf::RectangleShape>(sf::Vector2f(120, 3));
 	_wall4->setPosition(239, 318);
 	_wall4->setFillColor(sf::Color::White);
-
-
+	
 	_verticalSubWalls = std::vector<std::shared_ptr<sf::RectangleShape>>();
 	for (int ii = 0; ii < 9; ii++)
 	for (int jj = 0; jj < 4; jj++)
 	{
 		const auto thisWall = std::make_shared<sf::RectangleShape>(sf::Vector2f(1, 19));
 		thisWall->setFillColor(sf::Color::White);
-		thisWall->setPosition(238 + (40 * jj), 125 + (41 * ii));
+		thisWall->setPosition(238 + (40 * jj), 127 + (41 * ii));
 		_verticalSubWalls.push_back(thisWall);
 	}
 
@@ -55,8 +54,41 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	{
 		const auto thisWall = std::make_shared<sf::RectangleShape>(sf::Vector2f(19, 1));
 		thisWall->setFillColor(sf::Color::White);
-		thisWall->setPosition(125 + (40 * jj), 237 + (41 * ii));
+		thisWall->setPosition(129 + (40 * jj), 237 + (41 * ii));
 		_horizontalSubWalls.push_back(thisWall);
+	}
+
+	_symbols = std::vector<std::vector<std::shared_ptr<sf::Text>>>();
+
+	for (int ii = 0; ii < 9; ii++)
+	for (int jj = 0; jj < 9; jj++)
+	{
+		if (jj == 0)
+			_symbols.emplace_back();
+
+		const auto thisSymbolChar = _levelInfo.Config[ii][jj];
+
+		std::shared_ptr<sf::Text> thisSymbolPtr = nullptr;
+		switch (thisSymbolChar)
+		{
+		case 'x':
+			thisSymbolPtr = std::make_shared<sf::Text>("x", *font, 25);
+			break;
+		case 'o':
+			thisSymbolPtr = std::make_shared<sf::Text>("o", *font, 25);
+			break;
+		case 't':
+			thisSymbolPtr = std::make_shared<sf::Text>("t", *font, 25);
+			break;
+		case '_':
+		default:
+			break;
+		}
+
+		if (thisSymbolPtr)
+			thisSymbolPtr->setPosition(127 + (jj * 41), 118 + (ii * 41));
+
+		_symbols[ii].push_back(thisSymbolPtr);
 	}
 }
 
@@ -82,5 +114,12 @@ void LevelScreen::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	for (const auto& horizontalSubWall : _horizontalSubWalls)
 	{
 		target.draw(*horizontalSubWall, states);
+	}
+
+	for (const auto& symbolRow : _symbols)
+	for (const auto& symbol : symbolRow)
+	{
+		if (symbol)
+			target.draw(*symbol, states);
 	}
 }
