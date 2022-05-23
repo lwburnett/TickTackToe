@@ -90,7 +90,8 @@ xcopy $(SolutionDir)..\Assets $(OutDir)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>del $(OutDir)*.dll
-del $(OutDir)*.ttf</Command>
+del $(OutDir)*.ttf
+del $(outDir)*.png</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -117,7 +118,8 @@ xcopy $(SolutionDir)..\Assets $(OutDir)</Command>
     </PostBuildEvent>
     <PreBuildEvent>
       <Command>del $(OutDir)*.dll
-del $(OutDir)*.ttf</Command>
+del $(OutDir)*.ttf
+del $(outDir)*.png</Command>
     </PreBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">

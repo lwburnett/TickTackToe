@@ -1,5 +1,6 @@
 ﻿#include "LevelScreen.h"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "AssetManager.h"
 #include "Button.h"
@@ -43,7 +44,7 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	for (int jj = 0; jj < 4; jj++)
 	{
 		const auto thisWall = std::make_shared<sf::RectangleShape>(sf::Vector2f(1, 19));
-		thisWall->setFillColor(sf::Color::White);
+		thisWall->setFillColor(sf::Color(128, 128, 128));
 		thisWall->setPosition(238 + (40 * jj), 127 + (41 * ii));
 		_verticalSubWalls.push_back(thisWall);
 	}
@@ -53,13 +54,14 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	for (int jj = 0; jj < 9; jj++)
 	{
 		const auto thisWall = std::make_shared<sf::RectangleShape>(sf::Vector2f(19, 1));
-		thisWall->setFillColor(sf::Color::White);
+		thisWall->setFillColor(sf::Color(128, 128, 128));
 		thisWall->setPosition(129 + (40 * jj), 237 + (41 * ii));
 		_horizontalSubWalls.push_back(thisWall);
 	}
 
-	_symbols = std::vector<std::vector<std::shared_ptr<sf::Text>>>();
+	_symbols = std::vector<std::vector<std::shared_ptr<sf::Sprite>>>();
 
+	
 	for (int ii = 0; ii < 9; ii++)
 	for (int jj = 0; jj < 9; jj++)
 	{
@@ -68,17 +70,20 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 
 		const auto thisSymbolChar = _levelInfo.Config[ii][jj];
 
-		std::shared_ptr<sf::Text> thisSymbolPtr = nullptr;
+		std::shared_ptr<sf::Sprite> thisSymbolPtr = nullptr;
 		switch (thisSymbolChar)
 		{
 		case 'x':
-			thisSymbolPtr = std::make_shared<sf::Text>("x", *font, 25);
+			thisSymbolPtr = std::make_shared<sf::Sprite>(*AssetManager::LoadCrossTexture());
+			thisSymbolPtr->setColor(sf::Color::Green);
 			break;
 		case 'o':
-			thisSymbolPtr = std::make_shared<sf::Text>("o", *font, 25);
+			thisSymbolPtr = std::make_shared<sf::Sprite>(*AssetManager::LoadCircleTexture());
+			thisSymbolPtr->setColor(sf::Color::Cyan);
 			break;
 		case 't':
-			thisSymbolPtr = std::make_shared<sf::Text>("t", *font, 25);
+			thisSymbolPtr = std::make_shared<sf::Sprite>(*AssetManager::LoadTriangleTexture());
+			thisSymbolPtr->setColor(sf::Color::Red);
 			break;
 		case '_':
 		default:
@@ -86,7 +91,9 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 		}
 
 		if (thisSymbolPtr)
-			thisSymbolPtr->setPosition(127 + (jj * 41), 118 + (ii * 41));
+		{
+			thisSymbolPtr->setPosition(122 + (jj * 41), 121 + (ii * 41));
+		}
 
 		_symbols[ii].push_back(thisSymbolPtr);
 	}
@@ -101,10 +108,6 @@ void LevelScreen::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(*_titleText, states);
 	target.draw(*_backButton, states);
-	target.draw(*_wall1, states);
-	target.draw(*_wall2, states);
-	target.draw(*_wall3, states);
-	target.draw(*_wall4, states);
 
 	for (const auto& verticalSubWall : _verticalSubWalls)
 	{
@@ -115,6 +118,11 @@ void LevelScreen::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(*horizontalSubWall, states);
 	}
+
+	target.draw(*_wall1, states);
+	target.draw(*_wall2, states);
+	target.draw(*_wall3, states);
+	target.draw(*_wall4, states);
 
 	for (const auto& symbolRow : _symbols)
 	for (const auto& symbol : symbolRow)

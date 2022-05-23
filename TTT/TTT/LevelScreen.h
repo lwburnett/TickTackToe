@@ -9,6 +9,7 @@ class Button;
 
 namespace sf
 {
+	class Sprite;
 	class RectangleShape;
 	class Text;
 }
@@ -40,5 +41,5 @@ private:
 	std::vector<std::shared_ptr<sf::RectangleShape>> _verticalButtons;
 	std::vector<std::shared_ptr<sf::RectangleShape>> _horizontalButtons;
 
-	std::vector<std::vector<std::shared_ptr<sf::Text>>> _symbols;
+	std::vector<std::vector<std::shared_ptr<sf::Sprite>>> _symbols;
 };
