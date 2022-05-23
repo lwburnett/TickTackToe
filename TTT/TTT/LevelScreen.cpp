@@ -151,6 +151,8 @@ void LevelScreen::LoadSymbolsFromConfig()
 
 void LevelScreen::CreateTranslateButtons()
 {
+	const auto arrowTexture = AssetManager::LoadTranslate();
+
 	for (int ii = 3; ii < 6; ii++)
 	{
 		auto numSymbolsInRow = 0;
@@ -166,15 +168,19 @@ void LevelScreen::CreateTranslateButtons()
 
 		if (numSymbolsInRow > 3)
 		{
+			const auto arrowLeft = std::make_shared<sf::Sprite>(*arrowTexture);
+			arrowLeft->setOrigin(12.5, 12.5);
+			arrowLeft->setRotation(270);
 			const auto font = AssetManager::LoadMainFont();
-			const auto leftButtonContent = std::make_shared<sf::Text>("<", *font, 20);
-			const auto leftButton = std::make_shared<Button>([this](const GameTime& iGameTime){}, leftButtonContent);
+			const auto leftButton = std::make_shared<Button>([this](const GameTime& iGameTime){}, arrowLeft);
 			leftButton->setPosition(75, 75 + (41 * (ii + 1)));
 			leftButton->setScale(38, 38);
 			_translateButtons.push_back(leftButton);
-
-			const auto rightButtonContent = std::make_shared<sf::Text>(">", *font, 20);
-			const auto rightButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, rightButtonContent);
+			
+			const auto arrowRight = std::make_shared<sf::Sprite>(*arrowTexture);
+			arrowRight->setOrigin(12.5, 12.5);
+			arrowRight->setRotation(90);
+			const auto rightButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, arrowRight);
 			rightButton->setPosition(487, 75 + (41 * (ii + 1)));
 			rightButton->setScale(38, 38);
 			_translateButtons.push_back(rightButton);
@@ -182,15 +188,17 @@ void LevelScreen::CreateTranslateButtons()
 
 		if (numSymbolsInCol > 3)
 		{
+			const auto arrowUp = std::make_shared<sf::Sprite>(*arrowTexture);
 			const auto font = AssetManager::LoadMainFont();
-			const auto upButtonContent = std::make_shared<sf::Text>("^", *font, 20);
-			const auto upButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, upButtonContent);
+			const auto upButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, arrowUp);
 			upButton->setPosition(75 + (41 * (ii + 1)), 75);
 			upButton->setScale(38, 38);
 			_translateButtons.push_back(upButton);
-
-			const auto downButtonContent = std::make_shared<sf::Text>("v", *font, 20);
-			const auto downButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, downButtonContent);
+			
+			const auto arrowDown = std::make_shared<sf::Sprite>(*arrowTexture);
+			arrowDown->setOrigin(12.5, 12.5);
+			arrowDown->setRotation(180);
+			const auto downButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, arrowDown);
 			downButton->setPosition(75 + (41 * (ii + 1)), 487);
 			downButton->setScale(38, 38);
 			_translateButtons.push_back(downButton);

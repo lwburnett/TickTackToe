@@ -9,12 +9,14 @@
 namespace sf
 {
 	class Text;
+	class Sprite;
 }
 
 class Button : public IUiElement
 {
 public:
 	Button(std::function<void(const GameTime&)> iOnClickCallback, std::shared_ptr<sf::Text> iContent = nullptr);
+	Button(std::function<void(const GameTime&)> iOnClickCallback, std::shared_ptr<sf::Sprite> iContent = nullptr);
 	~Button() override = default;
 
 	void Update(const GameTime& iGameTime) override;
@@ -31,7 +33,8 @@ private:
 	};
 
 	std::function<void(const GameTime&)> _onClickCallback;
-	std::shared_ptr<sf::Text> _content;
+	std::shared_ptr<sf::Text> _contentText;
+	std::shared_ptr<sf::Sprite> _contentSprite;
 	bool _lastIterationPressedState;
 
 	bool _isOverlapped;

@@ -1,11 +1,23 @@
 #include "Button.h"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
 #include "WindowManager.h"
 
 Button::Button(std::function<void(const GameTime&)> iOnClickCallback, std::shared_ptr<sf::Text> iContent /*= nullptr*/) :
 	_onClickCallback(std::move(iOnClickCallback)),
-	_content(std::move(iContent)),
+	_contentText(std::move(iContent)),
+	_contentSprite(nullptr),
+	_lastIterationPressedState(false),
+	_isOverlapped(false),
+	_isPressed(false)
+{
+}
+
+Button::Button(std::function<void(const GameTime&)> iOnClickCallback, std::shared_ptr<sf::Sprite> iContent) :
+	_onClickCallback(std::move(iOnClickCallback)),
+	_contentText(nullptr),
+	_contentSprite(std::move(iContent)),
 	_lastIterationPressedState(false),
 	_isOverlapped(false),
 	_isPressed(false)
@@ -54,13 +66,24 @@ void Button::Update(const GameTime& iGameTime)
 		_backgroundRect.setFillColor(sf::Color(128, 128, 128));
 	}
 
-	if (_content)
+	if (_contentText)
 	{
-		const auto contentBounds = _content->getLocalBounds();
+		const auto contentBounds = _contentText->getLocalBounds();
 		const auto posX = getPosition().x + (getScale().x - contentBounds.width) / 2;
 		const auto posY = (getPosition().y + (getScale().y - contentBounds.height) / 2) - (10 * Lerp(0, 60, getScale().y));
 
-		_content->setPosition(posX, posY);
+		const auto origin = _contentText->getOrigin();
+		_contentText->setPosition(posX + origin.x, posY + origin.y);
+	}
+
+	if (_contentSprite)
+	{
+		const auto contentBounds = _contentSprite->getLocalBounds();
+		const auto posX = getPosition().x + (getScale().x - contentBounds.width) / 2;
+		const auto posY = (getPosition().y + (getScale().y - contentBounds.height) / 2);
+
+		const auto origin = _contentSprite->getOrigin();
+		_contentSprite->setPosition(posX + origin.x, posY + origin.y);
 	}
 }
 
@@ -68,8 +91,11 @@ void Button::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(_backgroundRect, states);
 
-	if(_content)
-		target.draw(*_content, states);
+	if(_contentText)
+		target.draw(*_contentText, states);
+
+	if (_contentSprite)
+		target.draw(*_contentSprite, states);
 }
 
 bool Button::IsOverlappingWithMouse(const sf::Event::MouseMoveEvent& iMouseMove) const
