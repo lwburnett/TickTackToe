@@ -153,6 +153,10 @@ void LevelScreen::OnPlayAgain()
 	_playState = PlayState::Play;
 	LoadSymbolsFromConfig();
 	_resultStrike.reset();
+
+	_titleText->setString(_levelInfo.Name);
+	const auto xPos = (WindowManager::GetWindowSize().x - _titleText->getLocalBounds().width) / 2;
+	_titleText->setPosition(xPos, 20);
 }
 
 void LevelScreen::LoadSymbolsFromConfig()
@@ -394,6 +398,52 @@ void LevelScreen::ValidatePlayState()
 				_resultStrike->setPosition(135 + (ii * 41), 239);
 				_resultStrike->setFillColor(sf::Color::Yellow);
 			}
+		}
+	}
+
+	if (_symbols[3][3]->Id == _symbols[4][4]->Id && _symbols[3][3]->Id == _symbols[5][5]->Id)
+	{
+		if (_symbols[3][3]->Id == SymbolId::Cross)
+		{
+			inWinningState = true;
+			if (!inLosingState)
+			{
+				_resultStrike = std::make_shared<sf::RectangleShape>(sf::Vector2f(1, 173));
+				_resultStrike->setPosition(251, 239);
+				_resultStrike->setFillColor(sf::Color::Yellow);
+				_resultStrike->setRotation(315);
+			}
+		}
+		else
+		{
+			inLosingState = true;
+			_resultStrike = std::make_shared<sf::RectangleShape>(sf::Vector2f(1, 173));
+			_resultStrike->setPosition(251, 239);
+			_resultStrike->setFillColor(sf::Color::Yellow);
+			_resultStrike->setRotation(315);
+		}
+	}
+
+	if (_symbols[3][5]->Id == _symbols[4][4]->Id && _symbols[3][5]->Id == _symbols[5][3]->Id)
+	{
+		if (_symbols[3][5]->Id == SymbolId::Cross)
+		{
+			inWinningState = true;
+			if (!inLosingState)
+			{
+				_resultStrike = std::make_shared<sf::RectangleShape>(sf::Vector2f(1, 173));
+				_resultStrike->setPosition(361, 239);
+				_resultStrike->setFillColor(sf::Color::Yellow);
+				_resultStrike->setRotation(45);
+			}
+		}
+		else
+		{
+			inLosingState = true;
+			_resultStrike = std::make_shared<sf::RectangleShape>(sf::Vector2f(1, 173));
+			_resultStrike->setPosition(361, 239);
+			_resultStrike->setFillColor(sf::Color::Yellow);
+			_resultStrike->setRotation(45);
 		}
 	}
 

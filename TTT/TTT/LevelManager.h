@@ -21,7 +21,7 @@ class LevelManager
 {
 public:
 	static LevelInfo Level1;
-	// const static LevelInfo Level2;
+	static LevelInfo Level2;
 	// const static LevelInfo Level3;
 	// const static LevelInfo Level4 = LevelInfo(
 	// 	"Level 4",
