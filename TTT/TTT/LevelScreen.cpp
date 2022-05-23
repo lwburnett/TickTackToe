@@ -60,8 +60,58 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	}
 
 	_symbols = std::vector<std::vector<std::shared_ptr<sf::Sprite>>>();
+	LoadSymbolsFromConfig();
 
-	
+	_transformButtons = std::vector<std::shared_ptr<Button>>();
+	CreateTransformButtons();
+}
+
+void LevelScreen::Update(const GameTime& iGameTime)
+{
+	_backButton->Update(iGameTime);
+	for (const auto & transformButton : _transformButtons)
+	{
+		transformButton->Update(iGameTime);
+	}
+}
+
+void LevelScreen::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	target.draw(*_titleText, states);
+	target.draw(*_backButton, states);
+
+	for (const auto& verticalSubWall : _verticalSubWalls)
+	{
+		target.draw(*verticalSubWall, states);
+	}
+
+	for (const auto& horizontalSubWall : _horizontalSubWalls)
+	{
+		target.draw(*horizontalSubWall, states);
+	}
+
+	target.draw(*_wall1, states);
+	target.draw(*_wall2, states);
+	target.draw(*_wall3, states);
+	target.draw(*_wall4, states);
+
+	for (const auto& symbolRow : _symbols)
+	for (const auto& symbol : symbolRow)
+	{
+		if (symbol)
+			target.draw(*symbol, states);
+	}
+
+	for (const auto& transformButton : _transformButtons)
+	{
+		target.draw(*transformButton, states);
+	}
+}
+
+void LevelScreen::LoadSymbolsFromConfig()
+{
+	_symbols.clear();
+
 	for (int ii = 0; ii < 9; ii++)
 	for (int jj = 0; jj < 9; jj++)
 	{
@@ -99,35 +149,51 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	}
 }
 
-void LevelScreen::Update(const GameTime& iGameTime)
+void LevelScreen::CreateTransformButtons()
 {
-	_backButton->Update(iGameTime);
-}
-
-void LevelScreen::draw(sf::RenderTarget& target, sf::RenderStates states) const
-{
-	target.draw(*_titleText, states);
-	target.draw(*_backButton, states);
-
-	for (const auto& verticalSubWall : _verticalSubWalls)
+	for (int ii = 3; ii < 6; ii++)
 	{
-		target.draw(*verticalSubWall, states);
-	}
+		auto numSymbolsInRow = 0;
+		auto numSymbolsInCol = 0;
 
-	for (const auto& horizontalSubWall : _horizontalSubWalls)
-	{
-		target.draw(*horizontalSubWall, states);
-	}
+		for (int jj = 0; jj < 9; jj++)
+		{
+			if (_symbols[ii][jj])
+				numSymbolsInRow++;
+			if (_symbols[jj][ii])
+				numSymbolsInCol++;
+		}
 
-	target.draw(*_wall1, states);
-	target.draw(*_wall2, states);
-	target.draw(*_wall3, states);
-	target.draw(*_wall4, states);
+		if (numSymbolsInRow > 3)
+		{
+			const auto font = AssetManager::LoadMainFont();
+			const auto leftButtonContent = std::make_shared<sf::Text>("<", *font, 20);
+			const auto leftButton = std::make_shared<Button>([this](const GameTime& iGameTime){}, leftButtonContent);
+			leftButton->setPosition(75, 75 + (41 * (ii + 1)));
+			leftButton->setScale(38, 38);
+			_transformButtons.push_back(leftButton);
 
-	for (const auto& symbolRow : _symbols)
-	for (const auto& symbol : symbolRow)
-	{
-		if (symbol)
-			target.draw(*symbol, states);
+			const auto rightButtonContent = std::make_shared<sf::Text>(">", *font, 20);
+			const auto rightButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, rightButtonContent);
+			rightButton->setPosition(487, 75 + (41 * (ii + 1)));
+			rightButton->setScale(38, 38);
+			_transformButtons.push_back(rightButton);
+		}
+
+		if (numSymbolsInCol > 3)
+		{
+			const auto font = AssetManager::LoadMainFont();
+			const auto upButtonContent = std::make_shared<sf::Text>("^", *font, 20);
+			const auto upButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, upButtonContent);
+			upButton->setPosition(75 + (41 * (ii + 1)), 75);
+			upButton->setScale(38, 38);
+			_transformButtons.push_back(upButton);
+
+			const auto downButtonContent = std::make_shared<sf::Text>("v", *font, 20);
+			const auto downButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, downButtonContent);
+			downButton->setPosition(75 + (41 * (ii + 1)), 487);
+			downButton->setScale(38, 38);
+			_transformButtons.push_back(downButton);
+		}
 	}
 }

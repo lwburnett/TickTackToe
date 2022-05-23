@@ -9,6 +9,7 @@ class Button;
 
 namespace sf
 {
+	class Font;
 	class Sprite;
 	class RectangleShape;
 	class Text;
@@ -38,8 +39,10 @@ private:
 	std::vector<std::shared_ptr<sf::RectangleShape>> _verticalSubWalls;
 	std::vector<std::shared_ptr<sf::RectangleShape>> _horizontalSubWalls;
 	
-	std::vector<std::shared_ptr<sf::RectangleShape>> _verticalButtons;
-	std::vector<std::shared_ptr<sf::RectangleShape>> _horizontalButtons;
+	std::vector<std::shared_ptr<Button>> _transformButtons;
 
 	std::vector<std::vector<std::shared_ptr<sf::Sprite>>> _symbols;
+
+	void LoadSymbolsFromConfig();
+	void CreateTransformButtons();
 };
