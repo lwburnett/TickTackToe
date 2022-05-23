@@ -70,6 +70,8 @@ std::shared_ptr<sf::Texture> AssetManager::LoadTexture(const std::string& iFileN
 	auto texture = std::make_shared<sf::Texture>();
 	texture->loadFromFile(assetPath);
 
+	texture->setSmooth(true);
+
 	return texture;
 }
 
