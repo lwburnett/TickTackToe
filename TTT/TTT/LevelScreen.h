@@ -31,6 +31,7 @@ private:
 	
 	std::shared_ptr<sf::Text> _titleText;
 	std::shared_ptr<Button> _backButton;
+	std::shared_ptr<Button> _resetButton;
 
 	std::shared_ptr<sf::RectangleShape> _wall1;
 	std::shared_ptr<sf::RectangleShape> _wall2;
@@ -42,6 +43,7 @@ private:
 	std::vector<std::shared_ptr<Button>> _translateButtons;
 	std::vector<std::vector<std::shared_ptr<sf::Sprite>>> _symbols;
 
+	void OnReset();
 	void LoadSymbolsFromConfig();
 	void CreateTranslateButtons();
 	void TranslateSymbols(int iIndex, bool iIsRow, bool iForwards);

@@ -23,6 +23,11 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	_backButton->setScale(80, 30);
 	_backButton->setPosition(40, 40);
 
+	auto resetText = std::make_shared<sf::Text>("Reset", *font, 20);
+	_resetButton = std::make_shared<Button>([this](const GameTime& iGameTime) { LoadSymbolsFromConfig(); }, resetText);
+	_resetButton->setScale(80, 30);
+	_resetButton->setPosition(260, 550);
+
 	_wall1 = std::make_shared<sf::RectangleShape>(sf::Vector2f(3, 120));
 	_wall1->setPosition(277, 239);
 	_wall1->setFillColor(sf::Color::White);
@@ -69,6 +74,7 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 void LevelScreen::Update(const GameTime& iGameTime)
 {
 	_backButton->Update(iGameTime);
+	_resetButton->Update(iGameTime);
 	for (const auto & transformButton : _translateButtons)
 	{
 		transformButton->Update(iGameTime);
@@ -79,6 +85,7 @@ void LevelScreen::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(*_titleText, states);
 	target.draw(*_backButton, states);
+	target.draw(*_resetButton, states);
 
 	for (const auto& verticalSubWall : _verticalSubWalls)
 	{
