@@ -7,7 +7,9 @@
 #include "WindowManager.h"
 
 LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const GameTime&)>& iOnBack) :
-	_levelInfo(iInfo)
+	_playState(PlayState::Play),
+	_levelInfo(iInfo),
+	_resultStrike(nullptr)
 {
 	const auto font = AssetManager::LoadMainFont();
 
@@ -27,6 +29,16 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	_resetButton = std::make_shared<Button>([this](const GameTime& iGameTime) { LoadSymbolsFromConfig(); }, resetText);
 	_resetButton->setScale(80, 30);
 	_resetButton->setPosition(260, 550);
+
+	auto selectLevelText = std::make_shared<sf::Text>("Select Level", *font, 20);
+	_levelSelectButton = std::make_shared<Button>(iOnBack, selectLevelText);
+	_levelSelectButton->setScale(120, 30);
+	_levelSelectButton->setPosition(150, 550);
+
+	auto playAgainText = std::make_shared<sf::Text>("Play Again", *font, 20);
+	_playAgainButton = std::make_shared<Button>([this](const GameTime iGameTime) { OnPlayAgain(); }, playAgainText);
+	_playAgainButton->setScale(120, 30);
+	_playAgainButton->setPosition(330, 550);
 
 	_wall1 = std::make_shared<sf::RectangleShape>(sf::Vector2f(3, 120));
 	_wall1->setPosition(277, 239);
@@ -64,7 +76,7 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 		_horizontalSubWalls.push_back(thisWall);
 	}
 
-	_symbols = std::vector<std::vector<std::shared_ptr<sf::Sprite>>>();
+	_symbols = std::vector<std::vector<std::shared_ptr<Symbol>>>();
 	LoadSymbolsFromConfig();
 
 	_translateButtons = std::vector<std::shared_ptr<Button>>();
@@ -73,11 +85,20 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 
 void LevelScreen::Update(const GameTime& iGameTime)
 {
-	_backButton->Update(iGameTime);
-	_resetButton->Update(iGameTime);
-	for (const auto & transformButton : _translateButtons)
+	if (_playState == PlayState::Play)
 	{
-		transformButton->Update(iGameTime);
+		_backButton->Update(iGameTime);
+		_resetButton->Update(iGameTime);
+		for (const auto& transformButton : _translateButtons)
+		{
+			transformButton->Update(iGameTime);
+		}
+	}
+	else
+	{
+		_backButton->Update(iGameTime);
+		_levelSelectButton->Update(iGameTime);
+		_playAgainButton->Update(iGameTime);
 	}
 }
 
@@ -85,7 +106,16 @@ void LevelScreen::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(*_titleText, states);
 	target.draw(*_backButton, states);
-	target.draw(*_resetButton, states);
+
+	if (_playState == PlayState::Play)
+	{
+		target.draw(*_resetButton, states);
+	}
+	else
+	{
+		target.draw(*_levelSelectButton, states);
+		target.draw(*_playAgainButton, states);
+	}
 
 	for (const auto& verticalSubWall : _verticalSubWalls)
 	{
@@ -103,16 +133,26 @@ void LevelScreen::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	target.draw(*_wall4, states);
 
 	for (const auto& symbolRow : _symbols)
-	for (const auto& symbol : symbolRow)
-	{
-		if (symbol)
-			target.draw(*symbol, states);
-	}
+		for (const auto& symbol : symbolRow)
+		{
+			if (symbol)
+				target.draw(*(symbol->Sprite), states);
+		}
 
 	for (const auto& transformButton : _translateButtons)
 	{
 		target.draw(*transformButton, states);
 	}
+
+	if (_resultStrike)
+		target.draw(*_resultStrike, states);
+}
+
+void LevelScreen::OnPlayAgain()
+{
+	_playState = PlayState::Play;
+	LoadSymbolsFromConfig();
+	_resultStrike.reset();
 }
 
 void LevelScreen::LoadSymbolsFromConfig()
@@ -128,19 +168,23 @@ void LevelScreen::LoadSymbolsFromConfig()
 		const auto thisSymbolChar = _levelInfo.Config[ii][jj];
 
 		std::shared_ptr<sf::Sprite> thisSymbolPtr = nullptr;
+		SymbolId thisSymbolId = SymbolId::Cross;
 		switch (thisSymbolChar)
 		{
 		case 'x':
 			thisSymbolPtr = std::make_shared<sf::Sprite>(*AssetManager::LoadCrossTexture());
 			thisSymbolPtr->setColor(sf::Color::Green);
+			thisSymbolId = SymbolId::Cross;
 			break;
 		case 'o':
 			thisSymbolPtr = std::make_shared<sf::Sprite>(*AssetManager::LoadCircleTexture());
 			thisSymbolPtr->setColor(sf::Color::Cyan);
+			thisSymbolId = SymbolId::Circle;
 			break;
 		case 't':
 			thisSymbolPtr = std::make_shared<sf::Sprite>(*AssetManager::LoadTriangleTexture());
 			thisSymbolPtr->setColor(sf::Color::Red);
+			thisSymbolId = SymbolId::Triangle;
 			break;
 		case '_':
 		default:
@@ -152,7 +196,11 @@ void LevelScreen::LoadSymbolsFromConfig()
 			thisSymbolPtr->setPosition(122 + (jj * 41), 121 + (ii * 41));
 		}
 
-		_symbols[ii].push_back(thisSymbolPtr);
+		const auto thisSymbol = thisSymbolPtr ? 
+			std::make_shared<Symbol>(thisSymbolId, thisSymbolPtr) :
+			nullptr;
+
+		_symbols[ii].push_back(thisSymbol);
 	}
 }
 
@@ -233,8 +281,8 @@ void LevelScreen::TranslateSymbols(const int iIndex, const bool iIsRow, const bo
 				_symbols[iIndex][ii] = _symbols[iIndex][ii - 1];
 				if (_symbols[iIndex][ii])
 				{
-					const auto currentPos = _symbols[iIndex][ii]->getPosition();
-					_symbols[iIndex][ii]->setPosition(currentPos.x + 41, currentPos.y);
+					const auto currentPos = _symbols[iIndex][ii]->Sprite->getPosition();
+					_symbols[iIndex][ii]->Sprite->setPosition(currentPos.x + 41, currentPos.y);
 				}
 			}
 
@@ -250,8 +298,8 @@ void LevelScreen::TranslateSymbols(const int iIndex, const bool iIsRow, const bo
 				_symbols[iIndex][ii] = _symbols[iIndex][ii + 1];
 				if (_symbols[iIndex][ii])
 				{
-					const auto currentPos = _symbols[iIndex][ii]->getPosition();
-					_symbols[iIndex][ii]->setPosition(currentPos.x - 41, currentPos.y);
+					const auto currentPos = _symbols[iIndex][ii]->Sprite->getPosition();
+					_symbols[iIndex][ii]->Sprite->setPosition(currentPos.x - 41, currentPos.y);
 				}
 			}
 
@@ -270,8 +318,8 @@ void LevelScreen::TranslateSymbols(const int iIndex, const bool iIsRow, const bo
 				_symbols[ii][iIndex] = _symbols[ii - 1][iIndex];
 				if (_symbols[ii][iIndex])
 				{
-					const auto currentPos = _symbols[ii][iIndex]->getPosition();
-					_symbols[ii][iIndex]->setPosition(currentPos.x, currentPos.y + 41);
+					const auto currentPos = _symbols[ii][iIndex]->Sprite->getPosition();
+					_symbols[ii][iIndex]->Sprite->setPosition(currentPos.x, currentPos.y + 41);
 				}
 			}
 
@@ -287,12 +335,81 @@ void LevelScreen::TranslateSymbols(const int iIndex, const bool iIsRow, const bo
 				_symbols[ii][iIndex] = _symbols[ii + 1][iIndex];
 				if (_symbols[ii][iIndex])
 				{
-					const auto currentPos = _symbols[ii][iIndex]->getPosition();
-					_symbols[ii][iIndex]->setPosition(currentPos.x, currentPos.y - 41);
+					const auto currentPos = _symbols[ii][iIndex]->Sprite->getPosition();
+					_symbols[ii][iIndex]->Sprite->setPosition(currentPos.x, currentPos.y - 41);
 				}
 			}
 
 			_symbols[8][iIndex] = nullptr;
 		}
+	}
+
+	ValidatePlayState();
+}
+
+void LevelScreen::ValidatePlayState()
+{
+	bool inWinningState = false;
+	bool inLosingState = false;
+
+	for (int ii = 3; ii < 6; ii++)
+	{
+		if (_symbols[ii][3]->Id == _symbols[ii][4]->Id && _symbols[ii][3]->Id == _symbols[ii][5]->Id)
+		{
+			if (_symbols[ii][3]->Id == SymbolId::Cross)
+			{
+				inWinningState = true;
+				if (!inLosingState)
+				{
+					_resultStrike = std::make_shared<sf::RectangleShape>(sf::Vector2f(120, 1));
+					_resultStrike->setPosition(239, 135 + (ii * 41));
+					_resultStrike->setFillColor(sf::Color::Yellow);
+				}
+			}
+			else
+			{
+				inLosingState = true;
+				_resultStrike = std::make_shared<sf::RectangleShape>(sf::Vector2f(120, 1));
+				_resultStrike->setPosition(239, 135 + (ii * 41));
+				_resultStrike->setFillColor(sf::Color::Yellow);
+			}
+		}
+
+		if (_symbols[3][ii]->Id == _symbols[4][ii]->Id && _symbols[3][ii]->Id == _symbols[5][ii]->Id)
+		{
+			if (_symbols[3][ii]->Id == SymbolId::Cross)
+			{
+				inWinningState = true;
+				if (!inLosingState)
+				{
+					_resultStrike = std::make_shared<sf::RectangleShape>(sf::Vector2f(1, 120));
+					_resultStrike->setPosition(135 + (ii * 41), 239);
+					_resultStrike->setFillColor(sf::Color::Yellow);
+				}
+			}
+			else
+			{
+				inLosingState = true;
+				_resultStrike = std::make_shared<sf::RectangleShape>(sf::Vector2f(1, 120));
+				_resultStrike->setPosition(135 + (ii * 41), 239);
+				_resultStrike->setFillColor(sf::Color::Yellow);
+			}
+		}
+	}
+
+	if (inLosingState)
+	{
+		_playState = PlayState::Lose;
+
+		_titleText->setString("Failure!");
+		const auto xPos = (WindowManager::GetWindowSize().x - _titleText->getLocalBounds().width) / 2;
+		_titleText->setPosition(xPos, 20);
+	}
+	else if (inWinningState)
+	{
+		_playState = PlayState::Win;
+		_titleText->setString("Success!");
+		const auto xPos = (WindowManager::GetWindowSize().x - _titleText->getLocalBounds().width) / 2;
+		_titleText->setPosition(xPos, 20);
 	}
 }
