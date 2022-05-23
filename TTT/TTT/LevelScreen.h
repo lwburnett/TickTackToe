@@ -39,10 +39,9 @@ private:
 	std::vector<std::shared_ptr<sf::RectangleShape>> _verticalSubWalls;
 	std::vector<std::shared_ptr<sf::RectangleShape>> _horizontalSubWalls;
 	
-	std::vector<std::shared_ptr<Button>> _transformButtons;
-
+	std::vector<std::shared_ptr<Button>> _translateButtons;
 	std::vector<std::vector<std::shared_ptr<sf::Sprite>>> _symbols;
 
 	void LoadSymbolsFromConfig();
-	void CreateTransformButtons();
+	void CreateTranslateButtons();
 };

@@ -62,14 +62,14 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	_symbols = std::vector<std::vector<std::shared_ptr<sf::Sprite>>>();
 	LoadSymbolsFromConfig();
 
-	_transformButtons = std::vector<std::shared_ptr<Button>>();
-	CreateTransformButtons();
+	_translateButtons = std::vector<std::shared_ptr<Button>>();
+	CreateTranslateButtons();
 }
 
 void LevelScreen::Update(const GameTime& iGameTime)
 {
 	_backButton->Update(iGameTime);
-	for (const auto & transformButton : _transformButtons)
+	for (const auto & transformButton : _translateButtons)
 	{
 		transformButton->Update(iGameTime);
 	}
@@ -102,7 +102,7 @@ void LevelScreen::draw(sf::RenderTarget& target, sf::RenderStates states) const
 			target.draw(*symbol, states);
 	}
 
-	for (const auto& transformButton : _transformButtons)
+	for (const auto& transformButton : _translateButtons)
 	{
 		target.draw(*transformButton, states);
 	}
@@ -149,7 +149,7 @@ void LevelScreen::LoadSymbolsFromConfig()
 	}
 }
 
-void LevelScreen::CreateTransformButtons()
+void LevelScreen::CreateTranslateButtons()
 {
 	for (int ii = 3; ii < 6; ii++)
 	{
@@ -171,13 +171,13 @@ void LevelScreen::CreateTransformButtons()
 			const auto leftButton = std::make_shared<Button>([this](const GameTime& iGameTime){}, leftButtonContent);
 			leftButton->setPosition(75, 75 + (41 * (ii + 1)));
 			leftButton->setScale(38, 38);
-			_transformButtons.push_back(leftButton);
+			_translateButtons.push_back(leftButton);
 
 			const auto rightButtonContent = std::make_shared<sf::Text>(">", *font, 20);
 			const auto rightButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, rightButtonContent);
 			rightButton->setPosition(487, 75 + (41 * (ii + 1)));
 			rightButton->setScale(38, 38);
-			_transformButtons.push_back(rightButton);
+			_translateButtons.push_back(rightButton);
 		}
 
 		if (numSymbolsInCol > 3)
@@ -187,13 +187,13 @@ void LevelScreen::CreateTransformButtons()
 			const auto upButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, upButtonContent);
 			upButton->setPosition(75 + (41 * (ii + 1)), 75);
 			upButton->setScale(38, 38);
-			_transformButtons.push_back(upButton);
+			_translateButtons.push_back(upButton);
 
 			const auto downButtonContent = std::make_shared<sf::Text>("v", *font, 20);
 			const auto downButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, downButtonContent);
 			downButton->setPosition(75 + (41 * (ii + 1)), 487);
 			downButton->setScale(38, 38);
-			_transformButtons.push_back(downButton);
+			_translateButtons.push_back(downButton);
 		}
 	}
 }
