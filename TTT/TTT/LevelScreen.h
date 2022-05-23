@@ -33,4 +33,7 @@ private:
 	std::shared_ptr<sf::RectangleShape> _wall2;
 	std::shared_ptr<sf::RectangleShape> _wall3;
 	std::shared_ptr<sf::RectangleShape> _wall4;
+
+	std::vector<std::shared_ptr<sf::RectangleShape>> _verticalSubWalls;
+	std::vector<std::shared_ptr<sf::RectangleShape>> _horizontalSubWalls;
 };
