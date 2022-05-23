@@ -21,6 +21,22 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	_backButton = std::make_shared<Button>(iOnBack, backText);
 	_backButton->setScale(80, 30);
 	_backButton->setPosition(40, 50);
+
+	_wall1 = std::make_shared<sf::RectangleShape>(sf::Vector2f(3, 120));
+	_wall1->setPosition(277, 239);
+	_wall1->setFillColor(sf::Color::White);
+
+	_wall2 = std::make_shared<sf::RectangleShape>(sf::Vector2f(3, 120));
+	_wall2->setPosition(318, 239);
+	_wall2->setFillColor(sf::Color::White);
+
+	_wall3 = std::make_shared<sf::RectangleShape>(sf::Vector2f(120, 3));
+	_wall3->setPosition(239, 277);
+	_wall3->setFillColor(sf::Color::White);
+
+	_wall4 = std::make_shared<sf::RectangleShape>(sf::Vector2f(120, 3));
+	_wall4->setPosition(239, 318);
+	_wall4->setFillColor(sf::Color::White);
 }
 
 void LevelScreen::Update(const GameTime& iGameTime)
@@ -32,4 +48,8 @@ void LevelScreen::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(*_titleText, states);
 	target.draw(*_backButton, states);
+	target.draw(*_wall1, states);
+	target.draw(*_wall2, states);
+	target.draw(*_wall3, states);
+	target.draw(*_wall4, states);
 }

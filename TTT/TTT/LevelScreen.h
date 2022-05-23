@@ -9,6 +9,7 @@ class Button;
 
 namespace sf
 {
+	class RectangleShape;
 	class Text;
 }
 
@@ -28,4 +29,8 @@ private:
 	
 	std::shared_ptr<sf::Text> _titleText;
 	std::shared_ptr<Button> _backButton;
+	std::shared_ptr<sf::RectangleShape> _wall1;
+	std::shared_ptr<sf::RectangleShape> _wall2;
+	std::shared_ptr<sf::RectangleShape> _wall3;
+	std::shared_ptr<sf::RectangleShape> _wall4;
 };
