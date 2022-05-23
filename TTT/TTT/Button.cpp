@@ -58,7 +58,7 @@ void Button::Update(const GameTime& iGameTime)
 	{
 		const auto contentBounds = _content->getLocalBounds();
 		const auto posX = getPosition().x + (getScale().x - contentBounds.width) / 2;
-		const auto posY = (getPosition().y + (getScale().y - contentBounds.height) / 2) - 10;
+		const auto posY = (getPosition().y + (getScale().y - contentBounds.height) / 2) - (10 * Lerp(0, 60, getScale().y));
 
 		_content->setPosition(posX, posY);
 	}
@@ -112,4 +112,14 @@ void Button::Reset()
 {
 	_isPressed = false;
 	_isOverlapped = false;
+}
+
+float Button::Lerp(const float iLowerBound, const float iUpperBound, const float iNum)
+{
+	if (iNum <= iLowerBound)
+		return 0.0f;
+	if (iNum >= iUpperBound)
+		return 1.0f;
+
+	return (iNum - iLowerBound) / (iUpperBound - iLowerBound);
 }

@@ -45,4 +45,6 @@ private:
 	void OnPressed();
 	void OnReleased(const GameTime& iGameTime);
 	void Reset();
+
+	static float Lerp(float iLowerBound, float iUpperBound, float iNum);
 };

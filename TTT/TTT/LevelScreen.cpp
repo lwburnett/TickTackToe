@@ -17,10 +17,10 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	const auto xPos = (WindowManager::GetWindowSize().x - _titleText->getLocalBounds().width) / 2;
 	_titleText->setPosition(xPos, 25);
 
-	auto backText = std::make_shared<sf::Text>("< Back", *font, 25);
+	auto backText = std::make_shared<sf::Text>("Back", *font, 20);
 	_backButton = std::make_shared<Button>(iOnBack, backText);
-	_backButton->setScale(90, 40);
-	_backButton->setPosition(40, 33);
+	_backButton->setScale(80, 30);
+	_backButton->setPosition(40, 50);
 }
 
 void LevelScreen::Update(const GameTime& iGameTime)
