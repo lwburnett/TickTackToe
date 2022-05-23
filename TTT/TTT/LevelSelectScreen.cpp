@@ -21,7 +21,7 @@ LevelSelectScreen::LevelSelectScreen(
 	_titleText->setFont(*font);
 	_titleText->setString("Select a level");
 	_titleText->setCharacterSize(60);
-	_titleText->setPosition(141, 50);
+	_titleText->setPosition(141, 25);
 
 	auto level1Text = std::make_shared<sf::Text>("Level 1", *font, 30);
 	_level1Button = std::make_shared<Button>(iOnLevel1, level1Text);

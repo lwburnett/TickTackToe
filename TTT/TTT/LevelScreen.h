@@ -1,6 +1,13 @@
 #pragma once
+#include <memory>
+
 #include "IScreen.h"
 #include "LevelManager.h"
+
+namespace sf
+{
+	class Text;
+}
 
 class LevelScreen : public IScreen
 {
@@ -15,4 +22,6 @@ protected:
 
 private:
 	LevelInfo _levelInfo;
+	
+	std::shared_ptr<sf::Text> _titleText;
 };

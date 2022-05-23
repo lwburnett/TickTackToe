@@ -15,7 +15,7 @@ MainMenuScreen::MainMenuScreen(
     _titleText->setFont(*font);
     _titleText->setString("Tick Tack Toe Puzzle");
     _titleText->setCharacterSize(60);
-    _titleText->setPosition(23.5, 75);
+    _titleText->setPosition(23.5, 25);
 
     auto playText = std::make_shared<sf::Text>("Play", *font, 40);
     _playButton = std::make_shared<Button>(iOnPlay, playText);
