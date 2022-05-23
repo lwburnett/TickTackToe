@@ -171,8 +171,9 @@ void LevelScreen::CreateTranslateButtons()
 			const auto arrowLeft = std::make_shared<sf::Sprite>(*arrowTexture);
 			arrowLeft->setOrigin(12.5, 12.5);
 			arrowLeft->setRotation(270);
-			const auto font = AssetManager::LoadMainFont();
-			const auto leftButton = std::make_shared<Button>([this](const GameTime& iGameTime){}, arrowLeft);
+			const auto leftButton = std::make_shared<Button>(
+				[=](const GameTime& iGameTime) { TranslateSymbols(ii, true, false); },
+				arrowLeft);
 			leftButton->setPosition(75, 75 + (41 * (ii + 1)));
 			leftButton->setScale(38, 38);
 			_translateButtons.push_back(leftButton);
@@ -180,7 +181,9 @@ void LevelScreen::CreateTranslateButtons()
 			const auto arrowRight = std::make_shared<sf::Sprite>(*arrowTexture);
 			arrowRight->setOrigin(12.5, 12.5);
 			arrowRight->setRotation(90);
-			const auto rightButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, arrowRight);
+			const auto rightButton = std::make_shared<Button>(
+				[=](const GameTime& iGameTime) { TranslateSymbols(ii, true, true); },
+				arrowRight);
 			rightButton->setPosition(487, 75 + (41 * (ii + 1)));
 			rightButton->setScale(38, 38);
 			_translateButtons.push_back(rightButton);
@@ -189,8 +192,9 @@ void LevelScreen::CreateTranslateButtons()
 		if (numSymbolsInCol > 3)
 		{
 			const auto arrowUp = std::make_shared<sf::Sprite>(*arrowTexture);
-			const auto font = AssetManager::LoadMainFont();
-			const auto upButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, arrowUp);
+			const auto upButton = std::make_shared<Button>(
+				[=](const GameTime& iGameTime) { TranslateSymbols(ii, false, false); },
+				arrowUp);
 			upButton->setPosition(75 + (41 * (ii + 1)), 75);
 			upButton->setScale(38, 38);
 			_translateButtons.push_back(upButton);
@@ -198,10 +202,90 @@ void LevelScreen::CreateTranslateButtons()
 			const auto arrowDown = std::make_shared<sf::Sprite>(*arrowTexture);
 			arrowDown->setOrigin(12.5, 12.5);
 			arrowDown->setRotation(180);
-			const auto downButton = std::make_shared<Button>([this](const GameTime& iGameTime) {}, arrowDown);
+			const auto downButton = std::make_shared<Button>(
+				[=](const GameTime& iGameTime) { TranslateSymbols(ii, false, true); },
+				arrowDown);
 			downButton->setPosition(75 + (41 * (ii + 1)), 487);
 			downButton->setScale(38, 38);
 			_translateButtons.push_back(downButton);
+		}
+	}
+}
+
+void LevelScreen::TranslateSymbols(const int iIndex, const bool iIsRow, const bool iForwards)
+{
+	if (iIsRow)
+	{
+		if (iForwards)
+		{
+			if (_symbols[iIndex][8] || !_symbols[iIndex][2])
+				return;
+
+			for (int ii = 8; ii > 0; ii--)
+			{
+				_symbols[iIndex][ii] = _symbols[iIndex][ii - 1];
+				if (_symbols[iIndex][ii])
+				{
+					const auto currentPos = _symbols[iIndex][ii]->getPosition();
+					_symbols[iIndex][ii]->setPosition(currentPos.x + 41, currentPos.y);
+				}
+			}
+
+			_symbols[iIndex][0] = nullptr;
+		}
+		if (!iForwards)
+		{
+			if (_symbols[iIndex][0] || !_symbols[iIndex][6])
+				return;
+
+			for (int ii = 0; ii < 8; ii++)
+			{
+				_symbols[iIndex][ii] = _symbols[iIndex][ii + 1];
+				if (_symbols[iIndex][ii])
+				{
+					const auto currentPos = _symbols[iIndex][ii]->getPosition();
+					_symbols[iIndex][ii]->setPosition(currentPos.x - 41, currentPos.y);
+				}
+			}
+
+			_symbols[iIndex][8] = nullptr;
+		}
+	}
+	else
+	{
+		if (iForwards)
+		{
+			if (_symbols[8][iIndex] || !_symbols[2][iIndex])
+				return;
+
+			for (int ii = 8; ii > 0; ii--)
+			{
+				_symbols[ii][iIndex] = _symbols[ii - 1][iIndex];
+				if (_symbols[ii][iIndex])
+				{
+					const auto currentPos = _symbols[ii][iIndex]->getPosition();
+					_symbols[ii][iIndex]->setPosition(currentPos.x, currentPos.y + 41);
+				}
+			}
+
+			_symbols[0][iIndex] = nullptr;
+		}
+		if (!iForwards)
+		{
+			if (_symbols[0][iIndex] || !_symbols[6][iIndex])
+				return;
+
+			for (int ii = 0; ii < 8; ii++)
+			{
+				_symbols[ii][iIndex] = _symbols[ii + 1][iIndex];
+				if (_symbols[ii][iIndex])
+				{
+					const auto currentPos = _symbols[ii][iIndex]->getPosition();
+					_symbols[ii][iIndex]->setPosition(currentPos.x, currentPos.y - 41);
+				}
+			}
+
+			_symbols[8][iIndex] = nullptr;
 		}
 	}
 }

@@ -44,4 +44,5 @@ private:
 
 	void LoadSymbolsFromConfig();
 	void CreateTranslateButtons();
+	void TranslateSymbols(int iIndex, bool iIsRow, bool iForwards);
 };
