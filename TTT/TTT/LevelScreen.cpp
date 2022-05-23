@@ -356,6 +356,7 @@ void LevelScreen::ValidatePlayState()
 	bool inWinningState = false;
 	bool inLosingState = false;
 
+	// Rows and columns
 	for (int ii = 3; ii < 6; ii++)
 	{
 		if (_symbols[ii][3]->Id == _symbols[ii][4]->Id && _symbols[ii][3]->Id == _symbols[ii][5]->Id)
@@ -400,7 +401,7 @@ void LevelScreen::ValidatePlayState()
 			}
 		}
 	}
-
+	// Diagonal top left to bottom right
 	if (_symbols[3][3]->Id == _symbols[4][4]->Id && _symbols[3][3]->Id == _symbols[5][5]->Id)
 	{
 		if (_symbols[3][3]->Id == SymbolId::Cross)
@@ -409,7 +410,7 @@ void LevelScreen::ValidatePlayState()
 			if (!inLosingState)
 			{
 				_resultStrike = std::make_shared<sf::RectangleShape>(sf::Vector2f(1, 173));
-				_resultStrike->setPosition(251, 239);
+				_resultStrike->setPosition(237, 239);
 				_resultStrike->setFillColor(sf::Color::Yellow);
 				_resultStrike->setRotation(315);
 			}
@@ -418,12 +419,13 @@ void LevelScreen::ValidatePlayState()
 		{
 			inLosingState = true;
 			_resultStrike = std::make_shared<sf::RectangleShape>(sf::Vector2f(1, 173));
-			_resultStrike->setPosition(251, 239);
+			_resultStrike->setPosition(237, 239);
 			_resultStrike->setFillColor(sf::Color::Yellow);
 			_resultStrike->setRotation(315);
 		}
 	}
 
+	// Diagonal top right to bottom left
 	if (_symbols[3][5]->Id == _symbols[4][4]->Id && _symbols[3][5]->Id == _symbols[5][3]->Id)
 	{
 		if (_symbols[3][5]->Id == SymbolId::Cross)
