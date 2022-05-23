@@ -89,7 +89,9 @@ void GameMaster::OnInstructions(const GameTime& iGameTime)
 void GameMaster::OnLevelScreen(const GameTime& iGameTime, const LevelInfo& iLevelInfo)
 {
     _previousScreen = _currentScreen;
-    _currentScreen = std::make_shared<LevelScreen>(iLevelInfo);
+    _currentScreen = std::make_shared<LevelScreen>(
+        iLevelInfo, 
+        [this](const GameTime& iGameTime){ OnPlayGame(iGameTime); });
 }
 
 void GameMaster::OnQuit(const GameTime& iGameTime)
