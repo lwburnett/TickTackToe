@@ -177,6 +177,7 @@ del $(OutDir)*.ttf</Command>
     <ClCompile Include="Button.cpp" />
     <ClCompile Include="GameMaster.cpp" />
     <ClCompile Include="GameTime.cpp" />
+    <ClCompile Include="InstructionsScreen.cpp" />
     <ClCompile Include="LevelManager.cpp" />
     <ClCompile Include="LevelScreen.cpp" />
     <ClCompile Include="LevelSelectScreen.cpp" />
@@ -189,6 +190,7 @@ del $(OutDir)*.ttf</Command>
     <ClInclude Include="Button.h" />
     <ClInclude Include="GameMaster.h" />
     <ClInclude Include="GameTime.h" />
+    <ClInclude Include="InstructionsScreen.h" />
     <ClInclude Include="IScreen.h" />
     <ClInclude Include="IUiElement.h" />
     <ClInclude Include="IUpdateable.h" />

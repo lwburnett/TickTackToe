@@ -1,4 +1,6 @@
 #include "GameMaster.h"
+
+#include "InstructionsScreen.h"
 #include "IScreen.h"
 #include "LevelManager.h"
 #include "LevelScreen.h"
@@ -83,7 +85,8 @@ void GameMaster::OnPlayGame(const GameTime& iGameTime)
 
 void GameMaster::OnInstructions(const GameTime& iGameTime)
 {
-    //_currentScreen = std::make_shared<InstructionsScreen>();
+    _previousScreen = _currentScreen;
+    _currentScreen = std::make_shared<InstructionsScreen>([this](const GameTime& iGameTime) {OnMainMenu(iGameTime); });
 }
 
 void GameMaster::OnLevelScreen(const GameTime& iGameTime, const LevelInfo& iLevelInfo)
