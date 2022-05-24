@@ -10,7 +10,8 @@ Button::Button(std::function<void(const GameTime&)> iOnClickCallback, std::share
 	_contentSprite(nullptr),
 	_lastIterationPressedState(false),
 	_isOverlapped(false),
-	_isPressed(false)
+	_isPressed(false),
+	_lastPressTime(sf::Time::Zero)
 {
 }
 
@@ -20,7 +21,8 @@ Button::Button(std::function<void(const GameTime&)> iOnClickCallback, std::share
 	_contentSprite(std::move(iContent)),
 	_lastIterationPressedState(false),
 	_isOverlapped(false),
-	_isPressed(false)
+	_isPressed(false),
+	_lastPressTime(sf::Time::Zero)
 {
 }
 
@@ -128,7 +130,11 @@ void Button::OnReleased(const GameTime& iGameTime)
 {
 	if (_isPressed && _isOverlapped)
 	{
-		_onClickCallback(iGameTime);
+		if (iGameTime.GetTotalElapsedTime().asMilliseconds() - iGameTime.GetDeltaTime().asMilliseconds() > 100)
+		{
+			_onClickCallback(iGameTime);
+			_lastPressTime = iGameTime.GetTotalElapsedTime();
+		}
 	}
 
 	_isPressed = false;

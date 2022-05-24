@@ -41,6 +41,7 @@ private:
 	bool _isPressed;
 
 	sf::RectangleShape _backgroundRect;
+	sf::Time _lastPressTime;
 
 	bool IsOverlappingWithMouse(const sf::Event::MouseMoveEvent& iMouseMove) const;
 	void OnOverlap();
