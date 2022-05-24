@@ -3,6 +3,7 @@
 #include <SFML/Graphics/Text.hpp>
 #include "Button.h"
 #include "AssetManager.h"
+#include "WindowManager.h"
 
 MainMenuScreen::MainMenuScreen(
     const std::function<void(const GameTime&)>& iOnPlay,
@@ -13,9 +14,10 @@ MainMenuScreen::MainMenuScreen(
 
     _titleText = std::make_shared<sf::Text>();
     _titleText->setFont(*font);
-    _titleText->setString("Tick Tack Toe Puzzle");
+    _titleText->setString("Tic Tac Toe Puzzle");
     _titleText->setCharacterSize(60);
-    _titleText->setPosition(23.5, 25);
+    const auto xPos = (WindowManager::GetWindowSize().x - _titleText->getLocalBounds().width) / 2;
+    _titleText->setPosition(xPos, 5);
 
     auto playText = std::make_shared<sf::Text>("Play", *font, 40);
     _playButton = std::make_shared<Button>(iOnPlay, playText);

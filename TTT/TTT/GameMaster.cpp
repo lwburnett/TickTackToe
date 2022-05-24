@@ -16,6 +16,7 @@ GameMaster::GameMaster(std::shared_ptr<sf::RenderWindow> iWindow) :
 
 void GameMaster::Run()
 {
+    WindowManager::Update(_window);
     Init();
 
     while (_window->isOpen())
