@@ -18,7 +18,7 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	_titleText->setString(_levelInfo.Name);
 	_titleText->setCharacterSize(50);
 	const auto xPos = (WindowManager::GetWindowSize().x - _titleText->getLocalBounds().width) / 2;
-	_titleText->setPosition(xPos, 10);
+	_titleText->setPosition(xPos, 5);
 
 	auto backText = std::make_shared<sf::Text>("Back", *font, 20);
 	_backButton = std::make_shared<Button>(iOnBack, backText);
@@ -155,7 +155,7 @@ void LevelScreen::OnPlayAgain()
 
 	_titleText->setString(_levelInfo.Name);
 	const auto xPos = (WindowManager::GetWindowSize().x - _titleText->getLocalBounds().width) / 2;
-	_titleText->setPosition(xPos, 20);
+	_titleText->setPosition(xPos, 5);
 }
 
 void LevelScreen::LoadSymbolsFromConfig()
@@ -459,13 +459,13 @@ void LevelScreen::ValidatePlayState()
 
 		_titleText->setString("Failure!");
 		const auto xPos = (WindowManager::GetWindowSize().x - _titleText->getLocalBounds().width) / 2;
-		_titleText->setPosition(xPos, 20);
+		_titleText->setPosition(xPos, 5);
 	}
 	else if (inWinningState)
 	{
 		_playState = PlayState::Win;
 		_titleText->setString("Success!");
 		const auto xPos = (WindowManager::GetWindowSize().x - _titleText->getLocalBounds().width) / 2;
-		_titleText->setPosition(xPos, 20);
+		_titleText->setPosition(xPos, 5);
 	}
 }

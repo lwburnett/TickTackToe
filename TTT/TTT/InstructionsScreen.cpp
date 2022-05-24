@@ -20,8 +20,8 @@ InstructionsScreen::InstructionsScreen(const std::function<void(const GameTime&)
 	_instructionTextLines = std::vector<std::shared_ptr<sf::Text>>
 	{
 		std::make_shared<sf::Text>("Score a tick tack toe against your own brain", *font, 20),
-		std::make_shared<sf::Text>("in this unique puzzle game. However instead", *font, 20),
-		std::make_shared<sf::Text>("of placing the symbols yourself, shuffle the", *font, 20),
+		std::make_shared<sf::Text>("in this unique puzzle game. Instead of", *font, 20),
+		std::make_shared<sf::Text>("placing the symbols yourself, shuffle the", *font, 20),
 		std::make_shared<sf::Text>("existing symbols around using the arrow keys.", *font, 20),
 		std::make_shared<sf::Text>("Avoid scoring a tick tack toe for the other", *font, 20),
 		std::make_shared<sf::Text>("symbols while you try to score one for the Crosses.", *font, 20),
