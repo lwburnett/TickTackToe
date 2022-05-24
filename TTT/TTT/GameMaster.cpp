@@ -74,9 +74,9 @@ void GameMaster::OnPlayGame(const GameTime& iGameTime)
         [this](const GameTime& iGameTime) { OnLevelScreen(iGameTime, LevelManager::Level3); },
         [this](const GameTime& iGameTime) { OnLevelScreen(iGameTime, LevelManager::Level4); },
         [this](const GameTime& iGameTime) { OnLevelScreen(iGameTime, LevelManager::Level5); },
-        [this](const GameTime& iGameTime) {},
+        [this](const GameTime& iGameTime) { OnLevelScreen(iGameTime, LevelManager::Level6); },
         [this](const GameTime& iGameTime) { OnLevelScreen(iGameTime, LevelManager::Level7); },
-        [this](const GameTime& iGameTime) {},
+        [this](const GameTime& iGameTime) { OnLevelScreen(iGameTime, LevelManager::Level8); },
         [this](const GameTime& iGameTime) {},
         [this](const GameTime& iGameTime) {OnMainMenu(iGameTime); });
 }

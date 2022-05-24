@@ -25,8 +25,8 @@ public:
 	static LevelInfo Level3;
 	static LevelInfo Level4;
 	static LevelInfo Level5;
-	// const static LevelInfo Level6;
+	static LevelInfo Level6;
 	static LevelInfo Level7;
-	// const static LevelInfo Level8;
+	static LevelInfo Level8;
 	// const static LevelInfo Level9;
 };
