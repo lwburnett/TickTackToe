@@ -190,6 +190,11 @@ void LevelScreen::LoadSymbolsFromConfig()
 			thisSymbolPtr->setColor(sf::Color::Red);
 			thisSymbolId = SymbolId::Triangle;
 			break;
+		case 's':
+			thisSymbolPtr = std::make_shared<sf::Sprite>(*AssetManager::LoadSquareTexture());
+			thisSymbolPtr->setColor(sf::Color::Magenta);
+			thisSymbolId = SymbolId::Square;
+			break;
 		case '_':
 		default:
 			break;

@@ -8,6 +8,7 @@ std::shared_ptr<sf::Font> AssetManager::sFont = nullptr;
 std::shared_ptr<sf::Texture> AssetManager::sCross = nullptr;
 std::shared_ptr<sf::Texture> AssetManager::sCircle = nullptr;
 std::shared_ptr<sf::Texture> AssetManager::sTriangle = nullptr;
+std::shared_ptr<sf::Texture> AssetManager::sSquare = nullptr;
 std::shared_ptr<sf::Texture> AssetManager::sTranslate = nullptr;
 //std::shared_ptr<sf::Texture> AssetManager::sRotate = nullptr;
 
@@ -52,6 +53,15 @@ std::shared_ptr<sf::Texture> AssetManager::LoadTriangleTexture()
 		sTriangle = LoadTexture("Triangle.png");
 	}
 	return sTriangle;
+}
+
+std::shared_ptr<sf::Texture> AssetManager::LoadSquareTexture()
+{
+	if (!sSquare)
+	{
+		sSquare = LoadTexture("Square.png");
+	}
+	return sSquare;
 }
 
 std::shared_ptr<sf::Texture> AssetManager::LoadTranslate()

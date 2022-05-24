@@ -15,6 +15,7 @@ public:
 	static std::shared_ptr<sf::Texture> LoadCrossTexture();
 	static std::shared_ptr<sf::Texture> LoadCircleTexture();
 	static std::shared_ptr<sf::Texture> LoadTriangleTexture();
+	static std::shared_ptr<sf::Texture> LoadSquareTexture();
 	static std::shared_ptr<sf::Texture> LoadTranslate();
 
 private:
@@ -25,5 +26,6 @@ private:
 	static std::shared_ptr<sf::Texture> sCross;
 	static std::shared_ptr<sf::Texture> sCircle;
 	static std::shared_ptr<sf::Texture> sTriangle;
+	static std::shared_ptr<sf::Texture> sSquare;
 	static std::shared_ptr<sf::Texture> sTranslate;
 };

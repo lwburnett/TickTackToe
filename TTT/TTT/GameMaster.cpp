@@ -71,11 +71,11 @@ void GameMaster::OnPlayGame(const GameTime& iGameTime)
     _currentScreen = std::make_shared<LevelSelectScreen>(
         [this](const GameTime& iGameTime) { OnLevelScreen(iGameTime, LevelManager::Level1); },
         [this](const GameTime& iGameTime) { OnLevelScreen(iGameTime, LevelManager::Level2); },
+        [this](const GameTime& iGameTime) { OnLevelScreen(iGameTime, LevelManager::Level3); },
         [this](const GameTime& iGameTime) {},
         [this](const GameTime& iGameTime) {},
         [this](const GameTime& iGameTime) {},
-        [this](const GameTime& iGameTime) {},
-        [this](const GameTime& iGameTime) {},
+        [this](const GameTime& iGameTime) { OnLevelScreen(iGameTime, LevelManager::Level7); },
         [this](const GameTime& iGameTime) {},
         [this](const GameTime& iGameTime) {},
         [this](const GameTime& iGameTime) {OnMainMenu(iGameTime); });
