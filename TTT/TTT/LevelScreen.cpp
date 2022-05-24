@@ -18,17 +18,17 @@ LevelScreen::LevelScreen(const LevelInfo& iInfo, const std::function<void(const 
 	_titleText->setString(_levelInfo.Name);
 	_titleText->setCharacterSize(50);
 	const auto xPos = (WindowManager::GetWindowSize().x - _titleText->getLocalBounds().width) / 2;
-	_titleText->setPosition(xPos, 20);
+	_titleText->setPosition(xPos, 10);
 
 	auto backText = std::make_shared<sf::Text>("Back", *font, 20);
 	_backButton = std::make_shared<Button>(iOnBack, backText);
 	_backButton->setScale(80, 30);
-	_backButton->setPosition(40, 40);
+	_backButton->setPosition(40, 560);
 
 	auto resetText = std::make_shared<sf::Text>("Reset", *font, 20);
 	_resetButton = std::make_shared<Button>([this](const GameTime& iGameTime) { LoadSymbolsFromConfig(); }, resetText);
 	_resetButton->setScale(80, 30);
-	_resetButton->setPosition(260, 550);
+	_resetButton->setPosition(260, 560);
 
 	auto selectLevelText = std::make_shared<sf::Text>("Select Level", *font, 20);
 	_levelSelectButton = std::make_shared<Button>(iOnBack, selectLevelText);
@@ -96,7 +96,6 @@ void LevelScreen::Update(const GameTime& iGameTime)
 	}
 	else
 	{
-		_backButton->Update(iGameTime);
 		_levelSelectButton->Update(iGameTime);
 		_playAgainButton->Update(iGameTime);
 	}
@@ -105,10 +104,10 @@ void LevelScreen::Update(const GameTime& iGameTime)
 void LevelScreen::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	target.draw(*_titleText, states);
-	target.draw(*_backButton, states);
 
 	if (_playState == PlayState::Play)
 	{
+		target.draw(*_backButton, states);
 		target.draw(*_resetButton, states);
 	}
 	else
